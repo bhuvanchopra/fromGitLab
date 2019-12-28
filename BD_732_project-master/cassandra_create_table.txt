@@ -1,0 +1,51 @@
+For comnined data in one table:
+
+CREATE TABLE amazon_sports (
+  "reviewerID" TEXT,
+  asin TEXT,
+  "reviewerName" TEXT,
+  helpful TEXT,
+  "reviewText" TEXT,
+  overall FLOAT,
+  summary TEXT,
+  "unixReviewTime" TIMESTAMP,
+  "reviewTime" TEXT,
+  title TEXT,
+  price FLOAT,
+  brand TEXT,
+  categories TEXT,
+  PRIMARY KEY (asin, "reviewerID")
+);
+
+For reviews data:
+
+CREATE TABLE sports_reviews (
+  "reviewerID" TEXT,
+  asin TEXT,
+  "reviewerName" TEXT,
+  helpful TEXT,
+  "reviewText" TEXT,
+  overall FLOAT,
+  summary TEXT,
+  "unixReviewTime" TIMESTAMP,
+  "reviewTime" TEXT,
+  PRIMARY KEY (asin, "reviewerID")
+);
+
+For metadata:
+
+CREATE TABLE sports_metadata (
+  asin TEXT,
+  title TEXT,
+  price FLOAT,
+  brand TEXT,
+  categories TEXT,
+  PRIMARY KEY (asin)
+);
+
+
+Command to load:
+
+spark-submit --packages datastax:spark-cassandra-connector:2.3.1-s_2.11 load_reviews.py bdproject/reviews_Sports_and_Outdoors.json.gz bdproject/meta_Sports_and_Outdoors.json.gz bchopra sports_reviews sports_metadata
+
+

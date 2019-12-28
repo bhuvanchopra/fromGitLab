@@ -1,0 +1,72 @@
+Command to run ALS on cluster:
+
+spark-submit --packages datastax:spark-cassandra-connector:2.3.1-s_2.11 --driver-memory 10g --conf "spark.driver.maxResultSize=2g" read_sports.py bchopra amazon_sports
+
+DataMining.ipynb and EDA.ipynb are both jupiter notebook files and can be opened using jupyter notebook environment.
+
+To run the NLP_Reviews.py
+python3 NLP_Reviews.py
+
+To run the surprisCF.py
+python3 surprisCF.py
+
+Cassandra Tables on the 'production_cluster' at 199.60.17.188:
+
+Keyspace : bchopra
+Table1 : sports_reviews
+Table2 : sports_metadata
+Table3 : amazon_sports
+
+CREATE TABLE commands:
+
+For comnined data in one table:
+CREATE TABLE amazon_sports (
+  "reviewerID" TEXT,
+  asin TEXT,
+  "reviewerName" TEXT,
+  helpful TEXT,
+  "reviewText" TEXT,
+  overall FLOAT,
+  summary TEXT,
+  "unixReviewTime" TIMESTAMP,
+  "reviewTime" TEXT,
+  title TEXT,
+  price FLOAT,
+  brand TEXT,
+  categories TEXT,
+  PRIMARY KEY (asin, "reviewerID")
+);
+
+For reviews data:
+CREATE TABLE sports_reviews (
+  "reviewerID" TEXT,
+  asin TEXT,
+  "reviewerName" TEXT,
+  helpful TEXT,
+  "reviewText" TEXT,
+  overall FLOAT,
+  summary TEXT,
+  "unixReviewTime" TIMESTAMP,
+  "reviewTime" TEXT,
+  PRIMARY KEY (asin, "reviewerID")
+);
+
+For metadata:
+CREATE TABLE sports_metadata (
+  asin TEXT,
+  title TEXT,
+  price FLOAT,
+  brand TEXT,
+  categories TEXT,
+  PRIMARY KEY (asin)
+);
+
+Command to load data in Cassandra:
+
+spark-submit --packages datastax:spark-cassandra-connector:2.3.1-s_2.11 load_reviews.py bdproject/reviews_Sports_and_Outdoors.json.gz bdproject/meta_Sports_and_Outdoors.json.gz bchopra sports_reviews sports_metadata
+
+JSON Data path on HDFS:
+
+For reviews data : /user/bchopra/bdproject/reviews_Sports_and_Outdoors.json.gz
+For metadata : /user/bchopra/bdproject/meta_Sports_and_Outdoors.json.gz
+
